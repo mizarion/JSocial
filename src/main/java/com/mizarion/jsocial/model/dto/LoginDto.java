@@ -10,10 +10,7 @@ import javax.validation.constraints.NotBlank;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDto {
-
-    @NotBlank(message = "Email required")
-    private String email;
+public class LoginDto {
 
     @NotBlank(message = "Username required")
     @JsonAlias(value={"name", "nickname"})

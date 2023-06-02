@@ -4,6 +4,7 @@ import com.mizarion.jsocial.model.dto.UserDto;
 import com.mizarion.jsocial.model.entity.UserEntity;
 import com.mizarion.jsocial.repository.UserRepository;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.StreamSupport;
 
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -23,8 +25,8 @@ public class UserServiceImpl implements UserService {
     @SneakyThrows
     @Override
     public void addUser(UserDto dto) {
-        if (userRepository.existsById(dto.getEmail())) {
-            throw new IllegalAccessException("user with email '" + dto.getEmail() + "' exist");
+        if (userRepository.existsByUsername(dto.getUsername())) {
+            throw new IllegalAccessException("user with username '" + dto.getUsername() + "' exist");
         }
         userRepository.save(modelMapper.map(dto, UserEntity.class));
     }
