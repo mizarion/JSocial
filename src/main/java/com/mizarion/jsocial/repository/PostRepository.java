@@ -5,14 +5,15 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
 public interface PostRepository extends CrudRepository<PostEntity, UUID> {
     List<PostEntity> findAllByOwner(String username);
 
-    boolean existsByOwnerAndTitle(String owner, String title);
+    Optional<PostEntity> findById(Long id);
 
-//    void deleteAllByOwner(String username);
+    boolean existsByOwnerAndTitle(String owner, String title);
 
 }
