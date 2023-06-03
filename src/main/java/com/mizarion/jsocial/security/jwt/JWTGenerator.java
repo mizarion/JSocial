@@ -7,22 +7,24 @@ import org.springframework.security.authentication.AuthenticationCredentialsNotF
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 @Component
 public class JWTGenerator {
 
-    private static final long JWT_EXPIRATION = 70000;
+    private static final long JWT_EXPIRATION = 86400;
     private static final String JWT_SECRET = "secret";
 
     public String generateToken(Authentication authentication) {
         String username = authentication.getName();
-        Date currentDate = new Date();
-        Date expireDate = new Date(currentDate.getTime() + JWT_EXPIRATION);
+        Date currentDate = Date.from(Instant.now());
+        Date expireDate = Date.from(Instant.now().plus(JWT_EXPIRATION, ChronoUnit.SECONDS));
 
         return Jwts.builder()
                 .setSubject(username)
-                .setIssuedAt(new Date())
+                .setIssuedAt(currentDate)
                 .setExpiration(expireDate)
                 .signWith(SignatureAlgorithm.HS512, JWT_SECRET)
                 .compact();

@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addUser(UserDto dto) {
         if (userRepository.existsByUsername(dto.getUsername())) {
-            throw new IllegalAccessException("user with username '" + dto.getUsername() + "' exist");
+            throw new IllegalArgumentException("user with username '" + dto.getUsername() + "' exist");
         }
         userRepository.save(modelMapper.map(dto, UserEntity.class));
     }
