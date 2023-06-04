@@ -49,7 +49,7 @@ public class AuthRestController {
      *
      */
     @PostMapping("login")
-    public ResponseEntity<JwtDto> login(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<JwtDto> login(@Valid @RequestBody LoginDto loginDto) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginDto.getUsername(),

@@ -1,9 +1,9 @@
 package com.mizarion.jsocial.service;
 
+import com.mizarion.jsocial.exception.throwables.UserException;
 import com.mizarion.jsocial.model.dto.UserDto;
 import com.mizarion.jsocial.model.entity.UserEntity;
 import com.mizarion.jsocial.repository.UserRepository;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +22,10 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private ModelMapper modelMapper;
 
-    @SneakyThrows
     @Override
     public void addUser(UserDto dto) {
         if (userRepository.existsByUsername(dto.getUsername())) {
-            throw new IllegalArgumentException("user with username '" + dto.getUsername() + "' exist");
+            throw new UserException("user with username '" + dto.getUsername() + "' already exist");
         }
         userRepository.save(modelMapper.map(dto, UserEntity.class));
     }
