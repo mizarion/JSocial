@@ -1,6 +1,7 @@
 package com.mizarion.jsocial.exception;
 
 import com.mizarion.jsocial.exception.throwables.PostException;
+import com.mizarion.jsocial.exception.throwables.SubscriptionException;
 import com.mizarion.jsocial.exception.throwables.UserException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolationException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -38,6 +40,8 @@ public class RestExceptionHandler {
             return new ResponseEntity<>(error.build(), ex.getStatus());
         } else if (e instanceof PostException ex) {
             return new ResponseEntity<>(error.build(), ex.getStatus());
+        } else if (e instanceof SubscriptionException ex) {
+            return new ResponseEntity<>(error.build(), ex.getStatus());
         } else if (e instanceof MethodArgumentNotValidException ex) {
             List<String> missingParams = ex
                     .getBindingResult()
@@ -48,7 +52,8 @@ public class RestExceptionHandler {
             return new ResponseEntity<>(error.build(), HttpStatus.NOT_ACCEPTABLE);
         } else if (e instanceof MissingServletRequestParameterException
                    || e instanceof BadCredentialsException
-                   || e instanceof HttpMessageNotReadableException) {
+                   || e instanceof HttpMessageNotReadableException
+                   || e instanceof ConstraintViolationException) {
             return new ResponseEntity<>(error.build(), HttpStatus.NOT_ACCEPTABLE);
         } else {
             return new ResponseEntity<>(error.build(), HttpStatus.INTERNAL_SERVER_ERROR);

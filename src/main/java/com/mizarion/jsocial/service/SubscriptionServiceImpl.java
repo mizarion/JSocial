@@ -1,5 +1,6 @@
 package com.mizarion.jsocial.service;
 
+import com.mizarion.jsocial.exception.throwables.SubscriptionException;
 import com.mizarion.jsocial.model.dto.SubscriptionDto;
 import com.mizarion.jsocial.model.entity.SubscriptionEntity;
 import com.mizarion.jsocial.repository.SubscriptionRepository;
@@ -25,7 +26,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     public void subscribe(SubscriptionDto dto) {
 
         if (subRepository.existsBySubscriberAndPublisher(dto.getSubscriber(), dto.getPublisher())) {
-            throw new IllegalArgumentException("User with username '" + dto.getSubscriber() + "' already subscribe on '" + dto.getPublisher() + "'");
+            throw new SubscriptionException("User with username '" + dto.getSubscriber() + "' already subscribe on '" + dto.getPublisher() + "'");
         }
 
         SubscriptionEntity entity = modelMapper.map(dto, SubscriptionEntity.class);
@@ -36,7 +37,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     public void unsubscribe(SubscriptionDto dto) {
         Optional<SubscriptionEntity> entity = subRepository.findBySubscriberAndPublisher(dto.getSubscriber(), dto.getPublisher());
         if (entity.isEmpty()) {
-            throw new IllegalArgumentException("User with username '" + dto.getSubscriber() + "'not subscribe on '" + dto.getPublisher() + "'");
+            throw new SubscriptionException("User with username '" + dto.getSubscriber() + "'not subscribe on '" + dto.getPublisher() + "'");
         }
         subRepository.delete(entity.get());
     }
