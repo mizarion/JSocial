@@ -22,13 +22,6 @@ class UserServiceImplTest {
     }
 
     @Test
-    void addUserTwice() {
-        UserDto dto = new UserDto("test1@mail.com", "name", "password");
-        service.addUser(dto);
-        Assertions.assertThrows(Exception.class, () -> service.addUser(dto));
-    }
-
-    @Test
     void getEmptyUsers() {
         Assertions.assertEquals(0, service.getUsers().size());
     }

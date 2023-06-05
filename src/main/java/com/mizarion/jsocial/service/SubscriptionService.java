@@ -12,4 +12,5 @@ public interface SubscriptionService {
 
     List<SubscriptionDto> getSubscriptions(String subscriber);
 
+    boolean checkFriendship(SubscriptionDto subscriptionDto);
 }

@@ -9,14 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SubscriptionDto {
 
-    private Long id;
 
     private String subscriber;
 
     private String publisher;
 
-    public SubscriptionDto(String subscriber, String publisher) {
-        this.subscriber = subscriber;
-        this.publisher = publisher;
-    }
 }

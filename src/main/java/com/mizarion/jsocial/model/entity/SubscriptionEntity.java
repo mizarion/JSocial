@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 
 @Entity
@@ -12,16 +13,14 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SubscriptionEntity {
-
+@IdClass(SubscriptionEntity.class)
+public class SubscriptionEntity implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    // todo: make foreign key
+    @Column(name = "subscriber")
     private String subscriber;
-    // todo: make foreign key
+    @Id
+    @Column(name = "publisher")
     private String publisher;
 
 }
