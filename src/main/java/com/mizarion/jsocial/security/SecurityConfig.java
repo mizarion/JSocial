@@ -32,6 +32,14 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        String[] swagger_whitelist = {
+                "/swagger-resources/**",
+                "/swagger-ui/**",
+                "/swagger-ui.html",
+                "/v2/api-docs",
+                "/webjars/**"
+        };
+
         // Enable CORS and disable CSRF
         http = http.cors().and().csrf().disable();
 
@@ -43,6 +51,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/api/auth/**").permitAll()
+                .antMatchers(swagger_whitelist).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();
