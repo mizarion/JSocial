@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -18,14 +19,15 @@ public class PostEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /**
-     * @see UserEntity
-     */
+    @Column(name = "owner")
     private String owner;
 
+    @Column(name = "title")
     private String title;
 
+    @Column(name = "text")
     private String text;
 
-    // todo: creation time
+    @Column(name = "creationTime")
+    private LocalDateTime creationTime;
 }
