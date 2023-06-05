@@ -5,6 +5,8 @@ import com.mizarion.jsocial.model.dto.LoginDto;
 import com.mizarion.jsocial.model.dto.UserDto;
 import com.mizarion.jsocial.security.jwt.JWTGenerator;
 import com.mizarion.jsocial.service.UserService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,16 +41,16 @@ public class AuthRestController {
      * Создает нового пользователя
      */
     @PostMapping("register")
+    @ApiOperation("Register new user")
     public ResponseEntity<String> register(@Valid @RequestBody UserDto registerDto) {
         registerDto.setPassword(passwordEncoder.encode((registerDto.getPassword())));
         userService.addUser(registerDto);
         return ResponseEntity.ok("register user " + registerDto.getUsername());
     }
 
-    /**
-     *
-     */
     @PostMapping("login")
+    @ApiOperation("Login user")
+    @ApiResponse(code = 200, message = "JWT")
     public ResponseEntity<JwtDto> login(@Valid @RequestBody LoginDto loginDto) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
