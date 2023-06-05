@@ -5,6 +5,8 @@ import com.mizarion.jsocial.model.dto.post.DeletePostDto;
 import com.mizarion.jsocial.model.dto.post.PostDto;
 import com.mizarion.jsocial.model.dto.post.UpdatePostDto;
 import com.mizarion.jsocial.service.PostService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,15 +25,16 @@ public class PostRestController {
     private PostService postService;
 
     @GetMapping("/all")
+    @ApiOperation("Get all existing messages from all users")
+    @ApiResponse(code = 200, message = "List of posts")
     public ResponseEntity<List<PostDto>> getAllPosts() {
         return ResponseEntity.ok(postService.getAllPosts());
 
     }
 
-    /**
-     * Возвращает список постов текущего пользователя
-     */
     @GetMapping()
+    @ApiOperation("Returns a list of the current user's posts")
+    @ApiResponse(code = 200, message = "List of posts")
     public ResponseEntity<List<PostDto>> getOwnerPosts(Authentication authentication) {
         return ResponseEntity.ok(postService.getOwnerPosts(authentication.getName()));
     }
@@ -40,32 +43,26 @@ public class PostRestController {
      * Создает пост
      */
     @PostMapping()
-    public ResponseEntity<PostDto> createPost(Authentication authentication, @RequestBody @Valid CreatePostDto dto) {
-        String user = authentication.getName();
-        log.info("user '" + user + "' creating post");
-        PostDto postDto = new PostDto(user, dto.getTitle(),dto.getText());
+    @ApiOperation("Returns a list of the current user's posts")
+    @ApiResponse(code = 200, message = "List of posts")
+    public ResponseEntity<PostDto> createPost(Authentication authentication, @RequestBody @Valid CreatePostDto createPostDto) {
+        PostDto postDto = new PostDto(authentication.getName(), createPostDto.getTitle(), createPostDto.getText());
         return ResponseEntity.ok(postService.savePost(postDto));
     }
 
-    /**
-     * Обновляет пост.
-     */
     @PutMapping()
-    public ResponseEntity<PostDto> updatePost(Authentication authentication, @RequestBody @Valid UpdatePostDto dto) {
-        String user = authentication.getName();
-        log.info("user '" + user + "' update post");
-        PostDto postDto = postService.updatePost(new PostDto(dto.getId(), user, dto.getTitle(), dto.getText()));
-        return ResponseEntity.ok(postDto);
+    @ApiOperation("Updates the post by the given id")
+    @ApiResponse(code = 200, message = "Successfully updated post")
+    public ResponseEntity<PostDto> updatePost(Authentication authentication, @RequestBody @Valid UpdatePostDto updatePostDto) {
+        PostDto postDto = new PostDto(updatePostDto.getId(), authentication.getName(), updatePostDto.getTitle(), updatePostDto.getText());
+        return ResponseEntity.ok(postService.updatePost(postDto));
     }
 
-    /**
-     * Удаляет пост
-     */
     @DeleteMapping()
+    @ApiOperation("Deletes the post by the given id")
+    @ApiResponse(code = 200, message = "Successfully deleted post")
     public ResponseEntity<Void> deletePost(Authentication authentication, @RequestParam Long id) {
-        String user = authentication.getName();
-        log.info("user '" + user + "' delete post");
-        postService.deletePost(new DeletePostDto(id, user));
+        postService.deletePost(new DeletePostDto(id, authentication.getName()));
         return ResponseEntity.ok(null);
     }
 }
