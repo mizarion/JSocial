@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -43,7 +44,7 @@ public class PostRestController {
     public ResponseEntity<PostDto> createPost(Authentication authentication, @RequestBody @Valid CreatePostDto dto) {
         String user = authentication.getName();
         log.info("user '" + user + "' creating post");
-        PostDto postDto = new PostDto(user, dto.getTitle(),dto.getText());
+        PostDto postDto = new PostDto(user, dto.getTitle(), dto.getText(), LocalDateTime.now());
         return ResponseEntity.ok(postService.savePost(postDto));
     }
 
@@ -54,7 +55,7 @@ public class PostRestController {
     public ResponseEntity<PostDto> updatePost(Authentication authentication, @RequestBody @Valid UpdatePostDto dto) {
         String user = authentication.getName();
         log.info("user '" + user + "' update post");
-        PostDto postDto = postService.updatePost(new PostDto(dto.getId(), user, dto.getTitle(), dto.getText()));
+        PostDto postDto = postService.updatePost(new PostDto(dto.getId(), user, dto.getTitle(), dto.getText(), LocalDateTime.now()));
         return ResponseEntity.ok(postDto);
     }
 

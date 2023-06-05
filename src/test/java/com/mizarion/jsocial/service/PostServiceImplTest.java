@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 
+import java.time.LocalDateTime;
+
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class PostServiceImplTest {
@@ -15,8 +17,8 @@ class PostServiceImplTest {
 
     @Autowired
     private PostService postService;
-    private final static PostDto dto = new PostDto(1L, "test_owner", "Test Title", "Test Text");
-    private final static PostDto dto2 = new PostDto(1L, "test_owner", "Test Title 2", "Test Text 2");
+    private final static PostDto dto = new PostDto(1L, "test_owner", "Test Title", "Test Text", LocalDateTime.now());
+    private final static PostDto dto2 = new PostDto(1L, "test_owner", "Test Title 2", "Test Text 2", LocalDateTime.now());
 
     private final static PostDto user1 = new PostDto("test_user1", "Test User Title 1", "Test User Text 1");
     private final static PostDto user2 = new PostDto("test_user2", "Test User Title 2", "Test User Text 2");
@@ -71,7 +73,7 @@ class PostServiceImplTest {
      */
     @Test
     public void anotherUserUpdatesPostTest() {
-        PostDto dto3 = new PostDto(dto.getId(), "test_owner 3", "Test Title 3", "Test Text 3");
+        PostDto dto3 = new PostDto(dto.getId(), "test_owner 3", "Test Title 3", "Test Text 3", LocalDateTime.now());
         Assertions.assertTrue(postService.getOwnerPosts(dto.getOwner()).isEmpty());
         postService.savePost(dto);
         Assertions.assertEquals(1, postService.getOwnerPosts(dto.getOwner()).size());
