@@ -1,16 +1,17 @@
 package com.mizarion.jsocial.model.dto.post;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class PostDto {
 
@@ -28,6 +29,8 @@ public class PostDto {
     @ApiModelProperty(example = "text", value = "Text of the post", required = true)
     @NotBlank(message = "Text required")
     private String text;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
+    private LocalDateTime creationTime;
 
     public PostDto(String owner, String title, String text) {
         this.owner = owner;
@@ -35,4 +38,18 @@ public class PostDto {
         this.text = text;
     }
 
+    public PostDto(String owner, String title, String text, LocalDateTime creationTime) {
+        this.owner = owner;
+        this.title = title;
+        this.text = text;
+        this.creationTime = creationTime.truncatedTo(ChronoUnit.MILLIS);
+    }
+
+    public PostDto(Long id, String owner, String title, String text, LocalDateTime creationTime) {
+        this.id = id;
+        this.owner = owner;
+        this.title = title;
+        this.text = text;
+        this.creationTime = creationTime.truncatedTo(ChronoUnit.MILLIS);
+    }
 }

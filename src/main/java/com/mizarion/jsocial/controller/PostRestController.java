@@ -14,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -46,7 +47,7 @@ public class PostRestController {
     @ApiOperation("Returns a list of the current user's posts")
     @ApiResponse(code = 200, message = "List of posts")
     public ResponseEntity<PostDto> createPost(Authentication authentication, @RequestBody @Valid CreatePostDto createPostDto) {
-        PostDto postDto = new PostDto(authentication.getName(), createPostDto.getTitle(), createPostDto.getText());
+        PostDto postDto = new PostDto(authentication.getName(), createPostDto.getTitle(), createPostDto.getText(), LocalDateTime.now());
         return ResponseEntity.ok(postService.savePost(postDto));
     }
 
@@ -54,7 +55,7 @@ public class PostRestController {
     @ApiOperation("Updates the post by the given id")
     @ApiResponse(code = 200, message = "Successfully updated post")
     public ResponseEntity<PostDto> updatePost(Authentication authentication, @RequestBody @Valid UpdatePostDto updatePostDto) {
-        PostDto postDto = new PostDto(updatePostDto.getId(), authentication.getName(), updatePostDto.getTitle(), updatePostDto.getText());
+        PostDto postDto = postService.updatePost(new PostDto(updatePostDto.getId(), authentication.getName(), updatePostDto.getTitle(), updatePostDto.getText(), LocalDateTime.now()));
         return ResponseEntity.ok(postService.updatePost(postDto));
     }
 
