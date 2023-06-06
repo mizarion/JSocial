@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-table-subscription
+      author: mizarion
+      changes:
+        - createTable:
+            tableName: subscriptions
+            columns:
+              - column:
+                  name: subscriber
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: publisher
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    primaryKey: true

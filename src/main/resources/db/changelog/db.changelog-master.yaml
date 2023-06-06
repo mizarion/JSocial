@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/changeset/create-table-users.yaml
+  - include:
+      file: db/changelog/changeset/create-table-posts.yaml
+  - include:
+      file: db/changelog/changeset/create-table-subscriptions.yaml
