@@ -43,6 +43,9 @@ public class SecurityConfig {
         // Enable CORS and disable CSRF
         http = http.cors().and().csrf().disable();
 
+        // H2
+        http.headers().frameOptions().disable();
+
         http.exceptionHandling()
                 .authenticationEntryPoint(authEntryPoint)
                 .and()
@@ -51,6 +54,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/api/auth/**").permitAll()
+                .antMatchers("/h2-console/**").permitAll()
                 .antMatchers(swagger_whitelist).permitAll()
                 .anyRequest().authenticated()
                 .and()

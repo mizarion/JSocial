@@ -1,0 +1,33 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-table-posts
+      author: mizarion
+      changes:
+        - createTable:
+            tableName: posts
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: email
+                  type: VARCHAR(250)
+              - column: # String Owner
+                  name: owner
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column: # String Title
+                  name: title
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column: # String Text
+                  name: text
+                  type: VARCHAR(255)
+              - column: # String creationTime
+                  name: creation_time
+                  type: timestamp
